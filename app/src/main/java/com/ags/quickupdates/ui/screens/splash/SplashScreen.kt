@@ -1,4 +1,4 @@
-package com.ags.quickupdates.ui.splash
+package com.ags.quickupdates.ui.screens.splash
 
 import androidx.compose.animation.core.Animatable
 import androidx.compose.animation.core.tween
@@ -26,10 +26,11 @@ import androidx.compose.ui.unit.dp
 import androidx.navigation.NavHostController
 import com.ags.quickupdates.R
 import com.ags.quickupdates.navigation.Routes
+import com.ags.quickupdates.ui.screens.auth.AuthViewModel
 import kotlinx.coroutines.delay
 
 @Composable
-fun SplashScreen(navController: NavHostController) {
+fun SplashScreen(navController: NavHostController, viewModel: AuthViewModel) {
 
     val logoAlpha = remember { Animatable(0f) }
     val textAlpha = remember { Animatable(0f) }
@@ -41,7 +42,8 @@ fun SplashScreen(navController: NavHostController) {
 
         delay(1000L)
 
-        navController.navigate(Routes.HOME) {
+        val isSignedIn = viewModel.isSignedIn()
+        navController.navigate(if (isSignedIn) Routes.HOME else Routes.AUTH) {
             popUpTo(Routes.SPLASH) { inclusive = true }
             launchSingleTop = true
         }
