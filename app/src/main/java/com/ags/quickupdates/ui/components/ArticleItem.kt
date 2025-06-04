@@ -20,6 +20,7 @@ import androidx.compose.ui.unit.sp
 import androidx.navigation.NavHostController
 import coil3.compose.AsyncImage
 import com.ags.quickupdates.R
+import com.ags.quickupdates.navigation.articleRoute
 import com.kwabenaberko.newsapilib.models.Article
 
 @Composable
@@ -27,7 +28,7 @@ fun ArticleItem(article: Article, navController: NavHostController) {
     Card(
         modifier = Modifier.padding(8.dp),
         elevation = CardDefaults.cardElevation(defaultElevation = 4.dp),
-        onClick = { /* Handle card click */ }
+        onClick = { article.url.let { navController.navigate(articleRoute(it)) } }
     ) {
         Row(
             modifier = Modifier

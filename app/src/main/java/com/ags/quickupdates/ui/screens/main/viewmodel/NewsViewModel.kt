@@ -4,14 +4,18 @@ import android.util.Log
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
-import com.ags.quickupdates.util.Constant
 import com.kwabenaberko.newsapilib.NewsApiClient
 import com.kwabenaberko.newsapilib.models.Article
 import com.kwabenaberko.newsapilib.models.request.EverythingRequest
 import com.kwabenaberko.newsapilib.models.request.TopHeadlinesRequest
 import com.kwabenaberko.newsapilib.models.response.ArticleResponse
+import dagger.hilt.android.lifecycle.HiltViewModel
+import jakarta.inject.Inject
 
-class NewsViewModel : ViewModel() {
+@HiltViewModel
+class NewsViewModel @Inject constructor(
+    private val newsApiClient: NewsApiClient
+) : ViewModel() {
 
     private val _articles = MutableLiveData<List<Article>>()
     val articles: LiveData<List<Article>> = _articles
@@ -22,7 +26,6 @@ class NewsViewModel : ViewModel() {
 
     fun fetchNewsTopHeadlines(category: String = "GENERAL") {
 
-        val newsApiClient = NewsApiClient(Constant.API_KEY)
         val request = TopHeadlinesRequest.Builder().language("en").category(category).build()
 
         newsApiClient.getTopHeadlines(request, object : NewsApiClient.ArticlesResponseCallback {
@@ -40,7 +43,6 @@ class NewsViewModel : ViewModel() {
 
     fun fetchEverythingWithQuery(query: String = "GENERAL") {
 
-        val newsApiClient = NewsApiClient(Constant.API_KEY)
         val request = EverythingRequest.Builder().language("en").q(query).build()
 
         newsApiClient.getEverything(request, object : NewsApiClient.ArticlesResponseCallback {

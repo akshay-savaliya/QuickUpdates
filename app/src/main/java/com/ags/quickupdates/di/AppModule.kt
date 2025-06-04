@@ -2,7 +2,9 @@ package com.ags.quickupdates.di
 
 import android.content.Context
 import androidx.credentials.CredentialManager
+import com.ags.quickupdates.util.Constant
 import com.google.firebase.auth.FirebaseAuth
+import com.kwabenaberko.newsapilib.NewsApiClient
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
@@ -18,4 +20,8 @@ object AppModule {
     @Provides
     fun provideCredentialManager(@ApplicationContext context: Context): CredentialManager =
         CredentialManager.create(context)
+
+    @Provides
+    fun provideNewsApiClient(): NewsApiClient =
+        NewsApiClient(Constant.API_KEY)
 }
