@@ -11,6 +11,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
+import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavHostController
 import com.ags.quickupdates.navigation.Routes
 import com.ags.quickupdates.ui.screens.auth.AuthViewModel
@@ -19,7 +20,7 @@ import com.ags.quickupdates.ui.screens.auth.AuthViewModel
 fun HomeScreen(
     modifier: Modifier = Modifier,
     navController: NavHostController,
-    viewModel: AuthViewModel
+    viewModel: AuthViewModel = hiltViewModel()
 ) {
     Column(
         modifier = modifier.fillMaxSize(),

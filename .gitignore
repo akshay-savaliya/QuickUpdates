@@ -97,3 +97,4 @@ Thumbs.db
 # Caches
 .cxx/
 
+/app/src/main/java/com/ags/quickupdates/util/Constant.kt

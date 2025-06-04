@@ -16,16 +16,21 @@ import com.google.android.libraries.identity.googleid.GoogleIdTokenCredential.Co
 import com.google.android.libraries.identity.googleid.GoogleIdTokenParsingException
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.GoogleAuthProvider
+import dagger.hilt.android.lifecycle.HiltViewModel
+import dagger.hilt.android.qualifiers.ApplicationContext
+import jakarta.inject.Inject
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.tasks.await
 import java.security.MessageDigest
 import java.util.UUID
 import kotlin.coroutines.cancellation.CancellationException
 
-class AuthViewModel(private val context: Context) : ViewModel() {
-
-    private val firebaseAuth = FirebaseAuth.getInstance()
-    private val credentialManager = CredentialManager.create(context)
+@HiltViewModel
+class AuthViewModel @Inject constructor(
+    private val firebaseAuth: FirebaseAuth,
+    private val credentialManager: CredentialManager,
+    @ApplicationContext private val context: Context
+) : ViewModel() {
 
     fun isSignedIn(): Boolean = firebaseAuth.currentUser != null
 
