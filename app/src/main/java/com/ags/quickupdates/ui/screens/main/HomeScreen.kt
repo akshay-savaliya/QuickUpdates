@@ -1,20 +1,18 @@
 package com.ags.quickupdates.ui.screens.main
 
-import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
-import androidx.compose.foundation.layout.height
-import androidx.compose.material3.Button
+import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
+import androidx.compose.ui.text.font.FontFamily
+import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavHostController
-import com.ags.quickupdates.navigation.Routes
 import com.ags.quickupdates.ui.screens.auth.AuthViewModel
+import com.ags.quickupdates.ui.screens.main.viewmodel.NewsViewModel
 
 @Composable
 fun HomeScreen(
@@ -22,21 +20,19 @@ fun HomeScreen(
     navController: NavHostController,
     viewModel: AuthViewModel = hiltViewModel()
 ) {
+
+    val newsViewModel: NewsViewModel = viewModel()
+
     Column(
-        modifier = modifier.fillMaxSize(),
-        verticalArrangement = Arrangement.Center,
-        horizontalAlignment = Alignment.CenterHorizontally
+        modifier = modifier.fillMaxSize()
     ) {
-        Text("Welcome to Home Screen")
-        Spacer(modifier = Modifier.height(16.dp))
-        Button(onClick = {
-            viewModel.signOut()
-            navController.navigate(Routes.AUTH) {
-                popUpTo(Routes.HOME) { inclusive = true }
-                launchSingleTop = true
-            }
-        }) {
-            Text("Sign Out")
-        }
+        Text(
+            text = "Quick Updates",
+            modifier = Modifier.align(Alignment.CenterHorizontally),
+            style = MaterialTheme.typography.headlineLarge,
+            color = MaterialTheme.colorScheme.primary,
+            fontFamily = FontFamily.Serif
+        )
+        NewsScreen(newsViewModel, navController)
     }
 }
