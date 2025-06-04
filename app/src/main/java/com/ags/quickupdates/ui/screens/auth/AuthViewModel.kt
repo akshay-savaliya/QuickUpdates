@@ -17,7 +17,6 @@ import com.google.android.libraries.identity.googleid.GoogleIdTokenParsingExcept
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.GoogleAuthProvider
 import dagger.hilt.android.lifecycle.HiltViewModel
-import dagger.hilt.android.qualifiers.ApplicationContext
 import jakarta.inject.Inject
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.tasks.await
@@ -28,16 +27,15 @@ import kotlin.coroutines.cancellation.CancellationException
 @HiltViewModel
 class AuthViewModel @Inject constructor(
     private val firebaseAuth: FirebaseAuth,
-    private val credentialManager: CredentialManager,
-    @ApplicationContext private val context: Context
+    private val credentialManager: CredentialManager
 ) : ViewModel() {
 
     fun isSignedIn(): Boolean = firebaseAuth.currentUser != null
 
-    suspend fun signIn(): Boolean {
+    suspend fun signIn(context: Context): Boolean {
         if (isSignedIn()) return true
         return try {
-            val result = buildCredentialRequest()
+            val result = buildCredentialRequest(context)
             handleSignIn(result)
         } catch (e: Exception) {
             if (e is CancellationException) throw e
@@ -55,7 +53,7 @@ class AuthViewModel @Inject constructor(
         return digest.fold("") { str, it -> str + "%02x".format(it) }
     }
 
-    private suspend fun buildCredentialRequest(): GetCredentialResponse {
+    private suspend fun buildCredentialRequest(context: Context): GetCredentialResponse {
         val request = GetCredentialRequest.Builder()
             .addCredentialOption(
                 GetGoogleIdOption.Builder()

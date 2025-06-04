@@ -1,5 +1,6 @@
 package com.ags.quickupdates.ui.screens.auth
 
+import android.app.Activity
 import android.widget.Toast
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
@@ -22,6 +23,7 @@ import kotlinx.coroutines.launch
 fun AuthScreen(navController: NavHostController, viewModel: AuthViewModel) {
 
     val context = LocalContext.current
+    val activity = context as? Activity
     val scope = rememberCoroutineScope()
 
     Column(
@@ -34,7 +36,7 @@ fun AuthScreen(navController: NavHostController, viewModel: AuthViewModel) {
         Button(
             onClick = {
                 scope.launch {
-                    if (viewModel.signIn()) {
+                    if (activity != null && viewModel.signIn(activity)) {
                         navController.navigate(Routes.HOME) {
                             popUpTo(Routes.AUTH) { inclusive = true }
                             launchSingleTop = true
