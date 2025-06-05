@@ -13,6 +13,8 @@ import com.ags.quickupdates.ui.screens.auth.AuthScreen
 import com.ags.quickupdates.ui.screens.auth.AuthViewModel
 import com.ags.quickupdates.ui.screens.main.HomeScreen
 import com.ags.quickupdates.ui.screens.main.NewsArticleScreen
+import com.ags.quickupdates.ui.screens.main.SearchScreen
+import com.ags.quickupdates.ui.screens.main.SettingsScreen
 import com.ags.quickupdates.ui.screens.splash.SplashScreen
 
 @Composable
@@ -43,5 +45,12 @@ fun AppNavigation(modifier: Modifier = Modifier) {
             NewsArticleScreen(url = Uri.decode(url))
         }
 
+        composable(Routes.SETTINGS) {
+            SettingsScreen(navController = navController, viewModel = viewModel)
+        }
+
+        composable(Routes.SEARCH) {
+            SearchScreen(navController = navController)
+        }
     }
 }
