@@ -8,35 +8,31 @@ import androidx.compose.foundation.rememberScrollState
 import androidx.compose.material3.Button
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
-import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
-import com.ags.quickupdates.ui.screens.main.viewmodel.NewsViewModel
 
 @Composable
-fun CategoriesBar(newsViewModel: NewsViewModel) {
+fun CategoriesBar(onCategorySelected: (String) -> Unit) {
 
-    val categoriesList = listOf(
-        "GENERAL",
-        "BUSINESS",
-        "ENTERTAINMENT",
-        "HEALTH",
-        "SCIENCE",
-        "SPORTS",
-        "TECHNOLOGY"
-    )
+    val categories =
+        listOf(
+            "GENERAL",
+            "BUSINESS",
+            "ENTERTAINMENT",
+            "HEALTH",
+            "SCIENCE",
+            "SPORTS",
+            "TECHNOLOGY"
+        )
 
     Row(
         modifier = Modifier
             .fillMaxWidth()
-            .horizontalScroll(rememberScrollState()),
-        verticalAlignment = Alignment.CenterVertically
+            .horizontalScroll(rememberScrollState())
     ) {
-        categoriesList.forEach { category ->
+        categories.forEach { category ->
             Button(
-                onClick = {
-                    newsViewModel.fetchNewsTopHeadlines(category)
-                },
+                onClick = { onCategorySelected(category) },
                 modifier = Modifier.padding(4.dp)
             ) {
                 Text(text = category)
