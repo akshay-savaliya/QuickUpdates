@@ -2,6 +2,8 @@ package com.ags.quickupdates.ui.components
 
 import android.os.Build
 import androidx.annotation.RequiresApi
+import androidx.compose.animation.core.animateFloatAsState
+import androidx.compose.animation.core.tween
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
@@ -43,6 +45,16 @@ fun ArticleItem(article: Article, navController: NavHostController) {
 
     var isImageLoading by remember { mutableStateOf(true) }
 
+    val imageAlpha by animateFloatAsState(
+        targetValue = if (isImageLoading) 0f else 1f,
+        animationSpec = tween(
+            durationMillis = 500,
+            delayMillis = 100,
+            easing = androidx.compose.animation.core.FastOutSlowInEasing
+        ),
+        label = "ImageFadeIn"
+    )
+
     Card(
         modifier = Modifier
             .padding(horizontal = 12.dp, vertical = 6.dp)
@@ -60,7 +72,7 @@ fun ArticleItem(article: Article, navController: NavHostController) {
                 modifier = Modifier
                     .fillMaxWidth()
                     .clip(RoundedCornerShape(topStart = 16.dp, topEnd = 16.dp))
-                    .alpha(if (isImageLoading) 0f else 1f),
+                    .alpha(imageAlpha),
                 onSuccess = { isImageLoading = false },
                 onError = { isImageLoading = false },
                 onLoading = { isImageLoading = true },
