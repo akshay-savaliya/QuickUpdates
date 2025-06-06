@@ -16,8 +16,13 @@ import androidx.compose.material3.CardDefaults
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.draw.alpha
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.layout.ContentScale
@@ -28,12 +33,16 @@ import androidx.navigation.NavHostController
 import coil3.compose.AsyncImage
 import com.ags.quickupdates.R
 import com.ags.quickupdates.navigation.articleRoute
+import com.ags.quickupdates.ui.shimmer.ShimmerBox
 import com.ags.quickupdates.util.Common.formatDate
 import com.kwabenaberko.newsapilib.models.Article
 
 @RequiresApi(Build.VERSION_CODES.O)
 @Composable
 fun ArticleItem(article: Article, navController: NavHostController) {
+
+    var isImageLoading by remember { mutableStateOf(true) }
+
     Card(
         modifier = Modifier
             .padding(horizontal = 12.dp, vertical = 6.dp)
@@ -50,9 +59,17 @@ fun ArticleItem(article: Article, navController: NavHostController) {
                 contentDescription = "Article Image",
                 modifier = Modifier
                     .fillMaxWidth()
-                    .clip(RoundedCornerShape(topStart = 16.dp, topEnd = 16.dp)),
+                    .clip(RoundedCornerShape(topStart = 16.dp, topEnd = 16.dp))
+                    .alpha(if (isImageLoading) 0f else 1f),
+                onSuccess = { isImageLoading = false },
+                onError = { isImageLoading = false },
+                onLoading = { isImageLoading = true },
                 contentScale = ContentScale.Crop
             )
+            if (isImageLoading) {
+                ShimmerBox()
+            }
+
             Column(
                 modifier = Modifier.padding(16.dp)
             ) {
