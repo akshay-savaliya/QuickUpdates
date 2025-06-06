@@ -31,13 +31,13 @@ import com.ags.quickupdates.ui.shimmer.ShimmerArticleItemCard
 
 @RequiresApi(Build.VERSION_CODES.O)
 @Composable
-fun NewsScreen(newsViewModel: NewsViewModel, navController: NavHostController) {
+fun NewsScreen(newsViewModel: NewsViewModel, navController: NavHostController, modifier: Modifier) {
 
     val category = remember { mutableStateOf("GENERAL") }
     val articles = newsViewModel.getPagedNews(category.value).collectAsLazyPagingItems()
 
     Column(
-        modifier = Modifier.fillMaxSize()
+        modifier = modifier.fillMaxSize()
     ) {
 
         CategoriesBar(
@@ -52,7 +52,7 @@ fun NewsScreen(newsViewModel: NewsViewModel, navController: NavHostController) {
 
             // 🔁 Show shimmer placeholders while loading the first page
             if (articles.loadState.refresh is LoadState.Loading) {
-                items(10) { ShimmerArticleItemCard() }
+                items(6) { ShimmerArticleItemCard() }
             } else {
                 items(count = articles.itemCount) { index ->
                     val article = articles[index]
@@ -62,15 +62,16 @@ fun NewsScreen(newsViewModel: NewsViewModel, navController: NavHostController) {
                 }
             }
 
+            // ⏳ Appending more content
             when (articles.loadState.append) {
                 is LoadState.Loading -> {
                     item {
                         Row(
-                            modifier = Modifier.fillMaxWidth(),
+                            modifier = Modifier.fillMaxWidth().padding(16.dp),
                             horizontalArrangement = Arrangement.Center,
                             verticalAlignment = Alignment.CenterVertically
                         ) {
-                            CircularProgressIndicator(modifier = Modifier.padding(16.dp))
+                            CircularProgressIndicator()
                         }
                     }
                 }
@@ -84,7 +85,7 @@ fun NewsScreen(newsViewModel: NewsViewModel, navController: NavHostController) {
                             horizontalAlignment = Alignment.CenterHorizontally
                         ) {
                             Text(
-                                text = "Failed to load more news",
+                                text = "Couldn't load more articles.",
                                 color = MaterialTheme.colorScheme.error,
                                 style = MaterialTheme.typography.bodyMedium
                             )

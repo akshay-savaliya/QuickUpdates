@@ -1,6 +1,8 @@
 package com.ags.quickupdates.navigation
 
 import android.net.Uri
+import android.os.Build
+import androidx.annotation.RequiresApi
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.hilt.navigation.compose.hiltViewModel
@@ -17,6 +19,7 @@ import com.ags.quickupdates.ui.screens.main.SearchScreen
 import com.ags.quickupdates.ui.screens.main.SettingsScreen
 import com.ags.quickupdates.ui.screens.splash.SplashScreen
 
+@RequiresApi(Build.VERSION_CODES.O)
 @Composable
 fun AppNavigation(modifier: Modifier = Modifier) {
 
@@ -34,7 +37,7 @@ fun AppNavigation(modifier: Modifier = Modifier) {
         }
 
         composable(Routes.HOME) {
-            HomeScreen(modifier = modifier, navController = navController)
+            HomeScreen(navController = navController)
         }
 
         composable(
