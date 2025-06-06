@@ -41,9 +41,8 @@ fun NewsScreen(newsViewModel: NewsViewModel, navController: NavHostController, m
     ) {
 
         CategoriesBar(
-            onCategorySelected = {
-                category.value = it
-            }
+            onCategorySelected = { category.value = it },
+            selectedCategory = category.value
         )
 
         LazyColumn(
@@ -67,7 +66,9 @@ fun NewsScreen(newsViewModel: NewsViewModel, navController: NavHostController, m
                 is LoadState.Loading -> {
                     item {
                         Row(
-                            modifier = Modifier.fillMaxWidth().padding(16.dp),
+                            modifier = Modifier
+                                .fillMaxWidth()
+                                .padding(16.dp),
                             horizontalArrangement = Arrangement.Center,
                             verticalAlignment = Alignment.CenterVertically
                         ) {
