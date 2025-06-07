@@ -100,8 +100,11 @@ fun SearchScreen(
                         unfocusedIndicatorColor = Color.Transparent
                     ),
                     trailingIcon = {
-                        IconButton(onClick = { query = "" }) {
-                            Icon(Icons.Default.Clear, contentDescription = "Back")
+                        IconButton(onClick = {
+                            query = ""
+                            newsViewModel.clearArticles()
+                        }) {
+                            Icon(Icons.Default.Clear, contentDescription = "Clear")
                         }
                     }
                 )
@@ -124,7 +127,7 @@ fun SearchScreen(
                     ) {
                         Text(
                             "No results found.",
-                            style = MaterialTheme.typography.bodyMedium.copy(color = Color.Gray)
+                            style = MaterialTheme.typography.bodyLarge.copy(color = Color.Gray)
                         )
                     }
                 }

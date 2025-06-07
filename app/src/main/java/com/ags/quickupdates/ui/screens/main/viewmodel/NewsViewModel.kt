@@ -54,4 +54,8 @@ class NewsViewModel @Inject constructor(
             pagingSourceFactory = { NewsPagingSource(category, newsApiClient) }
         ).flow.cachedIn(viewModelScope)
     }
+
+    fun clearArticles() {
+        _articles.value = emptyList()
+    }
 }
