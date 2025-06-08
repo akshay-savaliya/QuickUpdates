@@ -26,8 +26,11 @@ class NewsViewModel @Inject constructor(
     private val _articles = MutableLiveData<List<Article>>()
     val articles: LiveData<List<Article>> = _articles
 
-    fun fetchEverythingWithQuery(query: String = "GENERAL") {
+    private val _isLoading = MutableLiveData(false)
+    val isLoading: LiveData<Boolean> get() = _isLoading
 
+    fun fetchEverythingWithQuery(query: String = "GENERAL") {
+        _isLoading.value = true
         val request = EverythingRequest.Builder().language("en").q(query).build()
 
         newsApiClient.getEverything(request, object : NewsApiClient.ArticlesResponseCallback {
@@ -35,10 +38,12 @@ class NewsViewModel @Inject constructor(
                 response?.articles?.let {
                     _articles.postValue(it)
                 }
+                _isLoading.value = false
             }
 
             override fun onFailure(throwable: Throwable?) {
                 Log.i("NewsAPI Response", "Error: ${throwable?.message}")
+                _isLoading.value = false
             }
         })
     }
@@ -48,5 +53,9 @@ class NewsViewModel @Inject constructor(
             config = PagingConfig(pageSize = 20),
             pagingSourceFactory = { NewsPagingSource(category, newsApiClient) }
         ).flow.cachedIn(viewModelScope)
+    }
+
+    fun clearArticles() {
+        _articles.value = emptyList()
     }
 }
